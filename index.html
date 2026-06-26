@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Universo Romántico</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    body,html { margin:0; padding:0; height:100%; overflow:hidden; }
+    #scene1, #scene2, #scene3 {
+      position:absolute; top:0; left:0; width:100%; height:100%;
+      opacity:1; transition: opacity 2s ease;
+    }
+    #scene2, #scene3 { display:none; opacity:0; }
+
+    /* Fondo nebulosa escena 1 y 2 */
+    #scene1::before, #scene2::before {
+      content:""; position:absolute; top:0; left:0; width:100%; height:100%;
+      background: radial-gradient(circle at 30% 30%, #d6336c, transparent),
+                  radial-gradient(circle at 70% 70%, #7b2ff7, transparent),
+                  radial-gradient(circle at 50% 50%, #3a8dde, transparent);
+      filter: blur(40px); z-index:-1;
+    }
+
+    .title {
+      color:white; font-size:2em; text-shadow:2px 2px 5px black;
+      margin-bottom:40px; text-align:center; z-index:1;
+      font-family: 'Pacifico', cursive;
+    }
+    .gift {
+      width:200px; cursor:pointer;
+      animation: float 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 15px rgba(255,100,200,0.8)); z-index:1;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-15px);} }
+
+    /* Corazones cayendo */
+    .heart {
+      position:absolute; font-size:2em; animation: fall linear forwards; color:#ff4fa3;
+    }
+    @keyframes fall { 0%{transform:translateY(-10%);opacity:1;} 100%{transform:translateY(100vh);opacity:0;} }
+
+    /* Texto máquina de escribir */
+    #typedText {
+      position:absolute; top:25%; left:50%; transform:translateX(-50%);
+      width:85%; max-width:320px; text-align:center;
+      font-family: 'Pacifico', cursive; font-size:1.4em; color:white;
+      text-shadow:2px 2px 5px black; z-index:2; line-height:1.6em;
+      transition: transform 1.5s ease;
+    }
+    .fadeOut { animation: fadeOut 2s forwards; }
+    @keyframes fadeOut { from{opacity:1;} to{opacity:0;} }
+
+    /* Escena 3 fondo oscuro con nebulosa y estrellas */
+    #scene3 { background:black; position:relative; }
+    #scene3::before {
+      content:""; position:absolute; top:0; left:0; width:100%; height:100%;
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2), transparent);
+      z-index:-1;
+    }
+    .star { position:absolute; width:2px; height:2px; background:white; }
+  </style>
+</head>
+<body>
+
+  <!-- Escena 1 -->
+  <div id="scene1" style="display:flex;flex-direction:column;justify-content:center;align-items:center;">
+    <div class="title">¡Hoy es tu día especial!<br>Toca el pastelito para empezar la sorpresa ✨</div>
+    <img class="gift" src="regalo.png" alt="Caja de regalo">
+  </div>
+
+  <!-- Escena 2 -->
+  <div id="scene2"><div id="typedText"></div></div>
+
+  <!-- Escena 3 -->
+  <div id="scene3">
+    <!-- Estrellas -->
+    <script>
+      for(let i=0;i<60;i++){
+        const star=document.createElement("div");
+        star.className="star";
+        star.style.top=Math.random()*100+"%";
+        star.style.left=Math.random()*100+"%";
+        document.getElementById("scene3").appendChild(star);
+      }
+    </script>
+    <!-- Video -->
+    <video id="videoEscena3" width="100%" controls autoplay>
+      <source src="video1.mp4" type="video/mp4">
+      Tu navegador no soporta video HTML5.
+    </video>
+  </div>
+
+  <script>
+    const gift=document.querySelector('.gift');
+    const scene1=document.getElementById('scene1');
+    const scene2=document.getElementById('scene2');
+    const scene3=document.getElementById('scene3');
+
+    gift.addEventListener('click', ()=>{
+      scene1.style.opacity="0";
+      setTimeout(()=>{
+        scene1.style.display="none";
+        scene2.style.display="block";
+        setTimeout(()=>{ scene2.style.opacity="1"; },50);
+        startScene2();
+      },2000);
+    });
+
+    function startScene2(){
+      // Lluvia de corazones
+      setInterval(()=>{
+        const heart=document.createElement("div");
+        heart.className="heart"; heart.innerText="💖";
+        heart.style.left=Math.random()*100+"%";
+        const duration=6+Math.random()*4;
+        heart.style.animationDuration=duration+"s";
+        scene2.appendChild(heart);
+        setTimeout(()=>heart.remove(),duration*1000);
+      },1200);
+
+      // Texto dividido en párrafos
+      const texto=[
+        "💝 En este día tan especial, quería sorprenderte con algo hecho por mí...",
+        "Sé que no es un iPhone 13 Pro Max 📱, pero un regalo directo del corazón vale más que todos los galeones de Gringotts ⚡.",
+        "Eres una excelente persona y una mujer hermosa 🌹...",
+        "Vaya que has cambiado desde el día que te conocí 💑...",
+        "Soy el más feliz de que me permitas compartir tus 21 años contigo 🎉...",
+        "Sé que las cosas no están yendo como quieres en este momento 💪...",
+        "Tienes la valentía de una verdadera Gryffindor 🦁...",
+        "Sigues luchando por tus sueños con pasión indomable 🔥...",
+        "Me hace feliz ser quien descansa contigo todos los días 🛌...",
+        "Lo más bonito es que, más que mi pareja, te has convertido en mi mejor amiga 💕...",
+        "Hoy en día no me imagino despertar y no tenerte al lado, eres mi Expecto Patronum ✨...",
+        "La vida es difícil, pero elijo lucharla contigo 🌍...",
+        "¡FELIZ 21 AÑOS! 🎂 Recuerda siempre que TE AMO ❤️...",
+        "¿Después de todo este tiempo? Always (Siempre) 🌙..."
+      ];
+
+      const typedDiv=document.getElementById("typedText");
+      let pIndex=0;
+
+
+
+
+      setTimeout(()=>{
+        function typeParagraph(text, callback){
+          let i=0;
+          const p=document.createElement("p");
+          typedDiv.appendChild(p);
+          const interval=setInterval(()=>{
+            p.innerText=text.substring(0,i);
+            i++;
+            if(i>text.length){
+              clearInterval(interval);
+              callback();
+            }
+          },150); // velocidad lenta
+        }
+
+        function showNext(){
+          if(pIndex<texto.length){
+            typeParagraph(texto[pIndex], ()=>{
+              if(typedDiv.children.length>2){
+                typedDiv.children[0].classList.add("fadeOut");
+                setTimeout(()=>typedDiv.removeChild(typedDiv.children[0]),2000);
+              }
+              pIndex++;
+              showNext();
+            });
+          } else {
+            // Al terminar todo el texto principal
+            setTimeout(()=>{
+              const extraTexto = [
+                "Bueno ahoraaaaaa vamos a meterle una respectiva cantada para la cumpleañera 🎤🎶🎂✨🔥",
+                "Recordando mis mejores tiempos cuando soltaba los gallos 🎵🐓"
+              ];
+              let extraIndex=0;
+
+              function showExtra(){
+                if(extraIndex<extraTexto.length){
+                  typeParagraph(extraTexto[extraIndex], ()=>{
+                    if(typedDiv.children.length>2){
+                      typedDiv.children[0].classList.add("fadeOut");
+                      setTimeout(()=>typedDiv.removeChild(typedDiv.children[0]),2000);
+                    }
+                    extraIndex++;
+                    showExtra();
+                  });
+                } else {
+                  // Al terminar el texto adicional, mostrar botón con máquina de escribir
+                  setTimeout(()=>{
+                    typeParagraph("TOCAME PARA ESCUCHAR 🎧", ()=>{
+                      const touchText=typedDiv.lastChild;
+                      touchText.style.cursor="pointer";
+
+                      // Al tocar, transición a Escena 3
+                      touchText.addEventListener("click", ()=>{
+                        scene2.style.opacity="0";
+                        setTimeout(()=>{
+                          scene2.style.display="none";
+                          scene3.style.display="block";
+                          setTimeout(()=>{ scene3.style.opacity="1"; },50);
+
+                          // Reproducir video1 adaptado a celular
+                          const video=document.getElementById("videoEscena3");
+                          video.style.width="100%";
+                          video.style.height="100%";
+                          video.setAttribute("playsinline","true"); // iOS
+                          video.play();
+
+
+                          // Cuando termine video1 → reproducir video2 directamente
+                          video.addEventListener("ended", ()=>{
+                            video.style.transition="opacity 2s ease";
+                            video.style.opacity="0";
+                            setTimeout(()=>{
+                              video.style.display="none";
+
+                              // Crear video2 con transición suave
+                              const video2=document.createElement("video");
+                              video2.id="videoEscena4";
+                              video2.style.width="100%";
+                              video2.style.height="100%";
+                              video2.controls=true;
+                              video2.autoplay=true;
+                              video2.style.opacity="0";
+                              video2.style.transition="opacity 2s ease";
+                              video2.setAttribute("playsinline","true");
+                              const source=document.createElement("source");
+                              source.src="video2.mp4";
+                              source.type="video/mp4";
+                              video2.appendChild(source);
+                              scene3.appendChild(video2);
+
+                              setTimeout(()=>{ video2.style.opacity="1"; },50);
+
+                              // Cuando termine video2 → mostrar Saturno con nebulosa
+                              video2.addEventListener("ended", ()=>{
+                                video2.style.transition="opacity 2s ease";
+                                video2.style.opacity="0";
+                                setTimeout(()=>{
+                                  video2.style.display="none";
+
+                                  // Mostrar Saturno con nebulosa y zoom
+                                  const canvas=document.createElement("canvas");
+                                  canvas.id="universe";
+                                  canvas.width=window.innerWidth;
+                                  canvas.height=window.innerHeight;
+                                  scene3.appendChild(canvas);
+
+                                  const ctx=canvas.getContext("2d");
+                                  const fondo=new Image();
+                                  fondo.src="nebulosa_hd.jpg"; // fondo nebulosa
+                                  const saturn=new Image();
+                                  saturn.src="saturno.png"; // Saturno transparente
+
+                                  let zoom=1;
+                                  let saturnSize=200;
+
+                                  function draw(){
+                                    ctx.clearRect(0,0,canvas.width,canvas.height);
+                                    ctx.drawImage(fondo,0,0,canvas.width,canvas.height);
+
+                                    let size=saturnSize*zoom;
+                                    ctx.drawImage(saturn,canvas.width/2-size/2,canvas.height/2-size/2,size,size);
+                                  }
+
+                                  function animate(){
+                                    draw();
+                                    requestAnimationFrame(animate);
+                                  }
+                                  animate();
+
+                                  // Zoom con rueda o pinch
+                                  canvas.addEventListener("wheel", e=>{
+                                    zoom += e.deltaY * -0.001;
+                                    zoom = Math.min(Math.max(1, zoom), 3);
+                                  });
+                                },2000);
+                              });
+                            },2000);
+                          });
+                        },2000);
+                      });
+                    });
+                  },2000);
+                }
+              }
+              showExtra();
+            },2000);
+          }
+        }
+        showNext();
+      },1500);
+    }
+  </script>
+</body>
+</html>
+
